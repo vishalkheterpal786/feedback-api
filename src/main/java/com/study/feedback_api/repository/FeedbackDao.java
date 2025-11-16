@@ -25,7 +25,4 @@ public class FeedbackDao {
                 .getResultList();
     }
 
-    public Feedback findById(Long id) {
-        return em.find(Feedback.class, id);
-    }
 }

@@ -3,7 +3,7 @@ package com.study.feedback_api.controller;
 import com.study.feedback_api.dto.AddFeedbackResponse;
 import com.study.feedback_api.dto.FeedbackRequest;
 import com.study.feedback_api.model.Feedback;
-import com.study.feedback_api.service.FeedbackService;
+import com.study.feedback_api.service.FeedbackServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -15,17 +15,17 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/feedback")
 public class FeedbackController {
-    private final FeedbackService feedbackService;
+    private final FeedbackServiceImpl feedbackService;
 
-    public FeedbackController(FeedbackService feedbackService) {
+    public FeedbackController(FeedbackServiceImpl feedbackService) {
         this.feedbackService = feedbackService;
     }
 
-
     /**
-     * Add new feedback
+     * This method add feedback
+     * @param request FeedbackRequest obj
+     * @return AddFeedbackResponse obj with success true or false.
      */
-
     @PostMapping(
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
@@ -37,7 +37,8 @@ public class FeedbackController {
     }
 
     /**
-     * List all feedback
+     *
+     * @return List of feedback submitted
      */
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Feedback> getAllFeedback() {
