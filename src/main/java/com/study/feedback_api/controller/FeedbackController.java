@@ -3,7 +3,7 @@ package com.study.feedback_api.controller;
 import com.study.feedback_api.dto.AddFeedbackResponse;
 import com.study.feedback_api.dto.FeedbackRequest;
 import com.study.feedback_api.model.Feedback;
-import com.study.feedback_api.service.FeedbackServiceImpl;
+import com.study.feedback_api.service.FeedbackService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -15,9 +15,9 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/feedback")
 public class FeedbackController {
-    private final FeedbackServiceImpl feedbackService;
+    private final FeedbackService feedbackService;
 
-    public FeedbackController(FeedbackServiceImpl feedbackService) {
+    public FeedbackController(FeedbackService feedbackService) {
         this.feedbackService = feedbackService;
     }
 
