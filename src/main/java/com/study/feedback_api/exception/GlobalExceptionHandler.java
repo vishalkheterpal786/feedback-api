@@ -26,21 +26,4 @@ public class GlobalExceptionHandler {
         });
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
-    @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResponseEntity<Map<String, String>> handleInvalidEnum(HttpMessageNotReadableException ex) {
-        Map<String, String> error = new HashMap<>();
-        Throwable cause = ex.getMostSpecificCause();
-        if (cause instanceof InvalidFormatException ife && ife.getTargetType().isEnum()) {
-            String fieldName = ife.getPath().get(0).getFieldName();
-            Object[] enumConstants = ife.getTargetType().getEnumConstants();
-            String allowedValues = Arrays.stream(enumConstants)
-                    .map(Object::toString)  // convert enum to string
-                    .map(String::toLowerCase)
-                    .collect(Collectors.joining(", "));
-            error.put(fieldName, "Invalid value. Allowed values: " + allowedValues);
-        }else {
-            error.put("error", cause.getMessage());
-        }
-        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
-    }
 }

@@ -6,6 +6,7 @@ import com.study.feedback_api.model.Feedback;
 import com.study.feedback_api.service.FeedbackService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,7 +25,11 @@ public class FeedbackController {
     /**
      * Add new feedback
      */
-    @PostMapping
+
+    @PostMapping(
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
     public ResponseEntity<AddFeedbackResponse> addFeedback(@Valid @RequestBody FeedbackRequest request) {
         feedbackService.addFeedback(request);
         return ResponseEntity.status(HttpStatus.CREATED)

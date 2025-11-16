@@ -13,8 +13,8 @@ public class FeedbackRequest {
     @Size(max = 100)
     private String email;
 
-    @NotNull(message = "contactType is required")
-    private ContactType contactType;
+    @NotBlank(message = "contactType is required")
+    private String contactType;
 
     @NotBlank(message = "message is required")
     @Size(max = 1000)
@@ -25,8 +25,8 @@ public class FeedbackRequest {
     public void setName(String name) { this.name = name; }
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
-    public ContactType getContactType() { return contactType; }
-    public void setContactType(ContactType contactType) { this.contactType = contactType; }
+    public String getContactType() { return contactType; }
+    public void setContactType(String contactType) { this.contactType = contactType; }
     public String getMessage() { return message; }
     public void setMessage(String message) { this.message = message; }
 }
