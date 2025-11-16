@@ -37,9 +37,9 @@ public class FeedbackController {
     }
 
     /**
-     * List all feedback submissions
+     * List all feedback
      */
-    @GetMapping
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Feedback> getAllFeedback() {
         return feedbackService.getAllFeedback();
     }

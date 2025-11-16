@@ -1,4 +1,4 @@
-package com.study.feedback_api;
+package com.study.feedback_api.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.study.feedback_api.dto.FeedbackRequest;
@@ -45,12 +45,12 @@ class FeedbackControllerTest {
         FeedbackRequest request = new FeedbackRequest();
         request.setName("Test");
         request.setEmail("Test@test.com");
-        request.setContactType(ContactType.support.name());
+        request.setContactType(ContactType.SUPPORT.name());
         request.setMessage("Integration test message");
 
         mockMvc.perform(post("/api/feedback")
-                        .contentType(MediaType.APPLICATION_JSON)        // matches 'consumes'
-                        .accept(MediaType.APPLICATION_JSON)            // matches 'produces'
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON) 
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.success").value(true))
@@ -62,14 +62,14 @@ class FeedbackControllerTest {
         Feedback saved = allFeedback.get(0);
         assertThat(saved.getName()).isEqualTo("Test");
         assertThat(saved.getEmail()).isEqualTo("Test@test.com");
-        assertThat(saved.getContactType()).isEqualTo(ContactType.support);
+        assertThat(saved.getContactType()).isEqualTo(ContactType.SUPPORT);
         assertThat(saved.getMessage()).isEqualTo("Integration test message");
     }
 
     @Test
     void shouldReturnAllFeedback() throws Exception {
-        Feedback f1 = new Feedback("Alice", "alice@example.com", ContactType.general, "Message 1");
-        Feedback f2 = new Feedback("Bob", "bob@example.com", ContactType.marketing, "Message 2");
+        Feedback f1 = new Feedback("Alice", "alice@example.com", ContactType.GENERAL, "Message 1");
+        Feedback f2 = new Feedback("Bob", "bob@example.com", ContactType.MARKETING, "Message 2");
         feedbackDao.save(f1);
         feedbackDao.save(f2);
 
@@ -85,7 +85,7 @@ class FeedbackControllerTest {
     void shouldReturnBadRequestForBlankMessage() throws Exception {
         FeedbackRequest invalidRequest = new FeedbackRequest();
         invalidRequest.setMessage("");
-        invalidRequest.setContactType(ContactType.support.name());
+        invalidRequest.setContactType(ContactType.SUPPORT.name());
 
         mockMvc.perform(post("/api/feedback")
                         .contentType(MediaType.APPLICATION_JSON)

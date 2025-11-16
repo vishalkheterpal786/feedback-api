@@ -1,8 +1,6 @@
 package com.study.feedback_api.dto;
 
-import com.study.feedback_api.model.ContactType;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 public class FeedbackRequest {

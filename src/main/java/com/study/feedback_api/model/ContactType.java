@@ -1,7 +1,7 @@
 package com.study.feedback_api.model;
 
 public enum ContactType {
-    general,
-    marketing,
-    support
+    GENERAL,
+    MARKETING,
+    SUPPORT,
 }
