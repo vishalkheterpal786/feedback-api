@@ -5,6 +5,8 @@ import com.study.feedback_api.dto.FeedbackRequest;
 import com.study.feedback_api.dto.FeedbackResponse;
 import com.study.feedback_api.service.FeedbackService;
 import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +18,7 @@ import java.util.List;
 @RequestMapping("/api")
 public class FeedbackController {
     private final FeedbackService feedbackService;
-
+    private final Logger logger = LoggerFactory.getLogger(FeedbackController.class);
     public FeedbackController(FeedbackService feedbackService) {
         this.feedbackService = feedbackService;
     }
@@ -31,6 +33,7 @@ public class FeedbackController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<AddFeedbackResponse> addFeedback(@Valid @RequestBody FeedbackRequest request) {
+        logger.info("Add feedback for ContactType ", request.getContactType());
         feedbackService.addFeedback(request);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(new AddFeedbackResponse(true, "Your feedback has been successfully submitted."));
@@ -49,7 +52,10 @@ public class FeedbackController {
     public List<FeedbackResponse> getSortedFeedback(
             @RequestParam(defaultValue = "asc") String direction
     ) {
-        return feedbackService.getFeedbackOrderedByDate(direction);
+        logger.info("Returning {} feedback entries for direction ", direction);
+        List<FeedbackResponse> feedbackResponseList = feedbackService.getFeedbackOrderedByDate(direction);
+        logger.info("Returning {} feedback entries", feedbackResponseList.size());
+        return feedbackResponseList;
     }
 
 }

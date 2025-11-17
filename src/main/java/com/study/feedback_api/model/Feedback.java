@@ -1,11 +1,15 @@
 package com.study.feedback_api.model;
 
 import jakarta.persistence.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 
 @Entity
 @Table(name = "feedback")
+@EntityListeners(AuditingEntityListener.class)
 public class Feedback {
 
     @Id
@@ -26,8 +30,9 @@ public class Feedback {
     @Column(nullable = false, length = 1000)
     private String message;
 
+    @CreatedDate
     @Column(nullable = false, updatable = false)
-    private OffsetDateTime createdAt;
+    private LocalDateTime createdAt;
 
     public Feedback() {}
 
@@ -43,7 +48,6 @@ public class Feedback {
         this.email = email;
         this.contactType = contactType;
         this.message = message;
-        this.createdAt = OffsetDateTime.now();
     }
 
     public Long getId() {
@@ -66,7 +70,7 @@ public class Feedback {
         return message;
     }
 
-    public OffsetDateTime getCreatedAt() {
+    public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 }
