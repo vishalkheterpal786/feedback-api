@@ -3,8 +3,10 @@ package com.study.feedback_api.controller;
 import com.study.feedback_api.dto.AddFeedbackResponse;
 import com.study.feedback_api.dto.FeedbackRequest;
 import com.study.feedback_api.dto.FeedbackResponse;
+import com.study.feedback_api.model.ContactType;
 import com.study.feedback_api.service.FeedbackService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -25,8 +27,9 @@ public class FeedbackController {
 
     /**
      * This method add feedback
+     *
      * @param request FeedbackRequest obj
-     * @return AddFeedbackResponse obj with success true or false.
+     * @return AddFeedbackResponse obj with success message.
      */
     @PostMapping(value = "/feedback",
             consumes = MediaType.APPLICATION_JSON_VALUE,
@@ -56,6 +59,22 @@ public class FeedbackController {
         List<FeedbackResponse> feedbackResponseList = feedbackService.getFeedbackOrderedByDate(direction);
         logger.info("Returning {} feedback entries", feedbackResponseList.size());
         return feedbackResponseList;
+    }
+
+    /**
+     * Get feedback filtered by contact type
+     *
+     * @param type ContactType enum (mandatory)
+     */
+    @GetMapping(value = "/feedback/filter", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<FeedbackResponse>> getFeedbackByContactType(
+            @RequestParam @NotNull String type
+    ) {
+        ContactType contactType = ContactType.fromValue(type);
+        logger.info("Fetching feedback for contactType: {}", contactType);
+        List<FeedbackResponse> feedbacks = feedbackService.getFeedbackByContactType(contactType);
+        logger.info("Returning {} feedback entries", feedbacks.size());
+        return ResponseEntity.ok(feedbacks);
     }
 
 }

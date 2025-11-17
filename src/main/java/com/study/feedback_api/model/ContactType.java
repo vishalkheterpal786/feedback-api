@@ -15,7 +15,9 @@ public enum ContactType {
 
     @JsonCreator
     public static ContactType fromValue(String value) {
-        if (value == null) return null;
+        if (value == null || value.trim().equalsIgnoreCase("null")) {
+            return null;
+        }
         return ContactType.valueOf(value.trim().toUpperCase());
     }
 }

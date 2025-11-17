@@ -1,5 +1,6 @@
 package com.study.feedback_api.repository;
 
+import com.study.feedback_api.model.ContactType;
 import com.study.feedback_api.model.Feedback;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -38,5 +39,13 @@ public class FeedbackDao {
                 Feedback.class
         ).getResultList();
     }
-
+    public List<Feedback> findByContactType(ContactType contactType) {
+        logger.info("Fetching feedback with contactType: {}", contactType);
+        return em.createQuery(
+                        "SELECT f FROM Feedback f WHERE f.contactType = :contactType",
+                        Feedback.class
+                )
+                .setParameter("contactType", contactType)
+                .getResultList();
+    }
 }
