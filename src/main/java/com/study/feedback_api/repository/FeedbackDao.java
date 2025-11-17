@@ -25,4 +25,12 @@ public class FeedbackDao {
                 .getResultList();
     }
 
+    public List<Feedback> findAllSorted(String direction) {
+        String order = direction.equalsIgnoreCase("desc") ? "DESC" : "ASC";
+        return em.createQuery(
+                "SELECT f FROM Feedback f ORDER BY f.createdAt " + order,
+                Feedback.class
+        ).getResultList();
+    }
+
 }

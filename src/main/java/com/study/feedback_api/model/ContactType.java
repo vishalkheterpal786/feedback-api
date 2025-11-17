@@ -1,7 +1,21 @@
 package com.study.feedback_api.model;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+
 public enum ContactType {
     GENERAL,
     MARKETING,
-    SUPPORT,
+    SUPPORT;
+
+    @JsonValue
+    public String toValue(){
+        return this.name();
+    }
+
+    @JsonCreator
+    public static ContactType fromValue(String value) {
+        if (value == null) return null;
+        return ContactType.valueOf(value.trim().toUpperCase());
+    }
 }

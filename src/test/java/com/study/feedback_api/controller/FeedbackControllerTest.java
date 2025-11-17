@@ -45,7 +45,7 @@ class FeedbackControllerTest {
         FeedbackRequest request = new FeedbackRequest();
         request.setName("Test");
         request.setEmail("Test@test.com");
-        request.setContactType(ContactType.SUPPORT.name());
+        request.setContactType(ContactType.SUPPORT);
         request.setMessage("Integration test message");
 
         mockMvc.perform(post("/api/feedback")
@@ -85,18 +85,7 @@ class FeedbackControllerTest {
     void shouldReturnBadRequestForBlankMessage() throws Exception {
         FeedbackRequest invalidRequest = new FeedbackRequest();
         invalidRequest.setMessage("");
-        invalidRequest.setContactType(ContactType.SUPPORT.name());
-
-        mockMvc.perform(post("/api/feedback")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(invalidRequest)))
-                .andExpect(status().isBadRequest());
-    }
-    @Test
-    void shouldReturnBadRequestForInvalidContactType() throws Exception {
-        FeedbackRequest invalidRequest = new FeedbackRequest();
-        invalidRequest.setMessage("Here is a message");
-        invalidRequest.setContactType("");
+        invalidRequest.setContactType(ContactType.SUPPORT);
 
         mockMvc.perform(post("/api/feedback")
                         .contentType(MediaType.APPLICATION_JSON)

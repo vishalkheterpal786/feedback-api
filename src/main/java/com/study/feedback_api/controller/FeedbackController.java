@@ -2,7 +2,7 @@ package com.study.feedback_api.controller;
 
 import com.study.feedback_api.dto.AddFeedbackResponse;
 import com.study.feedback_api.dto.FeedbackRequest;
-import com.study.feedback_api.model.Feedback;
+import com.study.feedback_api.dto.FeedbackResponse;
 import com.study.feedback_api.service.FeedbackService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/feedback")
+@RequestMapping("/api")
 public class FeedbackController {
     private final FeedbackService feedbackService;
 
@@ -26,7 +26,7 @@ public class FeedbackController {
      * @param request FeedbackRequest obj
      * @return AddFeedbackResponse obj with success true or false.
      */
-    @PostMapping(
+    @PostMapping(value = "/feedback",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
@@ -37,12 +37,19 @@ public class FeedbackController {
     }
 
     /**
-     *
      * @return List of feedback submitted
      */
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Feedback> getAllFeedback() {
+    @GetMapping(value = "/feedback/all", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<FeedbackResponse> getAllFeedback() {
         return feedbackService.getAllFeedback();
+    }
+
+    @RequestMapping("/feedback")
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<FeedbackResponse> getSortedFeedback(
+            @RequestParam(defaultValue = "asc") String direction
+    ) {
+        return feedbackService.getFeedbackOrderedByDate(direction);
     }
 
 }
