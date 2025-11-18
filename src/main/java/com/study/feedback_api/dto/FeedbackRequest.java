@@ -1,7 +1,6 @@
 package com.study.feedback_api.dto;
 
 import com.study.feedback_api.model.ContactType;
-import com.study.feedback_api.validation.NullFieldValidator;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -9,7 +8,6 @@ import jakarta.validation.constraints.Size;
 public class FeedbackRequest {
 
     @Size(max = 100)
-    @NullFieldValidator
     private String name;
 
     @Size(max = 100)
@@ -18,7 +16,6 @@ public class FeedbackRequest {
     private ContactType contactType;
     @NotBlank(message = "message is required")
     @Size(max = 1000)
-    @NullFieldValidator
     private String message;
 
     // Getters and setters

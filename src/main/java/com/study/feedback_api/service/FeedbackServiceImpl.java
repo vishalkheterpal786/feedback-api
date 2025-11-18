@@ -2,6 +2,7 @@ package com.study.feedback_api.service;
 
 import com.study.feedback_api.dto.FeedbackRequest;
 import com.study.feedback_api.dto.FeedbackResponse;
+import com.study.feedback_api.exception.FieldNotFoundException;
 import com.study.feedback_api.mapper.FeedbackMapper;
 import com.study.feedback_api.model.ContactType;
 import com.study.feedback_api.model.Feedback;
@@ -22,6 +23,12 @@ public class FeedbackServiceImpl implements FeedbackService {
 
 
     public FeedbackResponse addFeedback(FeedbackRequest request) {
+        if (request.getMessage() == null
+                || request.getMessage().trim().isEmpty()
+                || request.getMessage().trim().equalsIgnoreCase("null")) {
+
+            throw new FieldNotFoundException("Feedback message cannot be null, empty, or the string 'null'");
+        }
         Feedback feedbackToSave = mapper.toEntity(request);
         Feedback savedFeedback = feedbackDao.save(feedbackToSave);
         return mapper.toResponse(savedFeedback);
