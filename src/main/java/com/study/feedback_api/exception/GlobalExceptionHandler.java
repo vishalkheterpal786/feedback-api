@@ -21,13 +21,20 @@ public class GlobalExceptionHandler {
         ex.getBindingResult().getFieldErrors().forEach(error -> {
             errors.put(error.getField(), error.getDefaultMessage());
         });
-        return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+        return ResponseEntity.badRequest().body(errors);
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<String> handleIllegalArgument(IllegalArgumentException ex) {
         logger.warn("Invalid request parameter: {}", ex.getMessage());
         String errorMsg = "Invalid input: " + ex.getMessage();
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorMsg);
+        return ResponseEntity.badRequest().body(errorMsg);
+    }
+
+    @ExceptionHandler(FieldNotFoundException.class)
+    public ResponseEntity<String> handleIllegalArgument(FieldNotFoundException ex) {
+        logger.warn("Invalid request parameter: {}", ex.getMessage());
+        String errorMsg = "Invalid input: " + ex.getMessage();
+        return ResponseEntity.badRequest().body(errorMsg);
     }
 }
