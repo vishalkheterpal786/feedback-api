@@ -27,18 +27,16 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class FeedbackControllerTest {
 
 
+    @Autowired
     private MockMvc mockMvc;
 
+    @Autowired
     private FeedbackDao feedbackDao;
 
+    @Autowired
     private ObjectMapper objectMapper;
 
-    @Autowired
-    FeedbackControllerTest(MockMvc mockMvc, FeedbackDao feedbackDao, ObjectMapper objectMapper) {
-        this.mockMvc = mockMvc;
-        this.feedbackDao = feedbackDao;
-        this.objectMapper = objectMapper;
-    }
+    FeedbackControllerTest() {}
 
     @Test
     void shouldCreateFeedbackAndPersist() throws Exception {
@@ -78,18 +76,21 @@ class FeedbackControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(2))
                 .andExpect(jsonPath("$[0].name").value("Alice"))
-                .andExpect(jsonPath("$[1].contactType").value("marketing"));
+                .andExpect(jsonPath("$[1].contactType").value("MARKETING"));
     }
 
     @Test
     void shouldReturnBadRequestForBlankMessage() throws Exception {
+        // Arrange: create a request with blank message
         FeedbackRequest invalidRequest = new FeedbackRequest();
-        invalidRequest.setMessage("");
+        invalidRequest.setMessage("");  // blank message
         invalidRequest.setContactType(ContactType.SUPPORT);
 
+        // Act & Assert
         mockMvc.perform(post("/api/feedback")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(invalidRequest)))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("message is required")); // optional, if your error response has a message
     }
 }

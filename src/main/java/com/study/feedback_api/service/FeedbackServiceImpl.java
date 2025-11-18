@@ -27,7 +27,7 @@ public class FeedbackServiceImpl implements FeedbackService {
                 || request.getMessage().trim().isEmpty()
                 || request.getMessage().trim().equalsIgnoreCase("null")) {
 
-            throw new FieldNotFoundException("Feedback message cannot be null, empty, or the string 'null'");
+            throw new FieldNotFoundException("message is required");
         }
         Feedback feedbackToSave = mapper.toEntity(request);
         Feedback savedFeedback = feedbackDao.save(feedbackToSave);
