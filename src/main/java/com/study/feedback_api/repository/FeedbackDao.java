@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class FeedbackDao {
@@ -33,7 +34,11 @@ public class FeedbackDao {
     @Transactional(readOnly = true)
     public List<Feedback> findAllSorted(String direction) {
         logger.info("Fetching feedback sorted by date: {}", direction);
-        String order = direction.equalsIgnoreCase("desc") ? "DESC" : "ASC";
+        String order = Optional.ofNullable(direction)
+                .filter(d -> d.equalsIgnoreCase("desc"))
+                .map(d -> "DESC")
+                .orElse("ASC");
+
         return em.createQuery(
                 "SELECT f FROM Feedback f ORDER BY f.createdAt " + order,
                 Feedback.class

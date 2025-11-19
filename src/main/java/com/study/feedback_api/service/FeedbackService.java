@@ -13,5 +13,6 @@ public interface FeedbackService {
     List<FeedbackResponse> getAllFeedback();
 
     List<FeedbackResponse> getFeedbackOrderedByDate(String direction);
+
     List<FeedbackResponse> getFeedbackByContactType(ContactType contactType);
 }

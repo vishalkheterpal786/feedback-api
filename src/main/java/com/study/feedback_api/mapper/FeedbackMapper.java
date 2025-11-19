@@ -12,10 +12,10 @@ public interface FeedbackMapper {
 
     default Feedback toEntity(FeedbackRequest request) {
         return new Feedback(
-                request.getName(),
-                request.getEmail(),
-                request.getContactType(),
-                request.getMessage()
+                request.name(),
+                request.email(),
+                request.contactType(),
+                request.message()
         );
     }
 

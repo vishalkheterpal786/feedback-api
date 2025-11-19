@@ -21,11 +21,13 @@ public class FeedbackServiceImpl implements FeedbackService {
         this.mapper = mapper;
     }
 
-
+    /**
+     * This method is used to store a Feedback.
+     */
     public FeedbackResponse addFeedback(FeedbackRequest request) {
-        if (request.getMessage() == null
-                || request.getMessage().trim().isEmpty()
-                || request.getMessage().trim().equalsIgnoreCase("null")) {
+        if (request.message() == null
+                || request.message().trim().isEmpty()
+                || request.message().trim().equalsIgnoreCase("null")) {
 
             throw new FieldNotFoundException("message is required");
         }
@@ -34,18 +36,30 @@ public class FeedbackServiceImpl implements FeedbackService {
         return mapper.toResponse(savedFeedback);
     }
 
-
+    /**
+     * This method is useful to get the all the feedback.
+     * @return List of Feedback
+     */
     public List<FeedbackResponse> getAllFeedback() {
         List<Feedback> feedbacks = feedbackDao.findAll();
         return mapper.toResponseList(feedbacks);
     }
 
-
+    /**
+     * This method is used to get feedback order by date on direction passed.
+     * @param direction ASC or DESC
+     * @return List of ordered feedback
+     */
     public List<FeedbackResponse> getFeedbackOrderedByDate(String direction) {
         List<Feedback> feedbacks = feedbackDao.findAllSorted(direction);
         return mapper.toResponseList(feedbacks);
     }
 
+    /**
+     * This method is used to Get Feedback by Contact type
+     * @param type Contact Type
+     * @return List of feedback
+     */
     public List<FeedbackResponse> getFeedbackByContactType(ContactType type) {
         List<Feedback> feedbacks = feedbackDao.findByContactType(type);
         return mapper.toResponseList(feedbacks);

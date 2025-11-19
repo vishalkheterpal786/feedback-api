@@ -34,7 +34,7 @@ public class FeedbackController {
      */
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AddFeedbackResponse> addFeedback(@Valid @RequestBody FeedbackRequest request) {
-        logger.info("Add feedback for ContactType ", request.getContactType());
+        logger.info("Add feedback for ContactType ", request.contactType());
         feedbackService.addFeedback(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(new AddFeedbackResponse(true, "Your feedback has been successfully submitted."));
     }

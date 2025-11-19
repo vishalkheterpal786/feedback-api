@@ -40,11 +40,8 @@ class FeedbackControllerTest {
 
     @Test
     void shouldCreateFeedbackAndPersist() throws Exception {
-        FeedbackRequest request = new FeedbackRequest();
-        request.setName("Test");
-        request.setEmail("Test@test.com");
-        request.setContactType(ContactType.SUPPORT);
-        request.setMessage("Integration test message");
+        FeedbackRequest request = new FeedbackRequest("Test", "Test@test.com", ContactType.SUPPORT, "Integration test message");
+
 
         mockMvc.perform(post("/api/feedback")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -81,16 +78,13 @@ class FeedbackControllerTest {
 
     @Test
     void shouldReturnBadRequestForBlankMessage() throws Exception {
-        // Arrange: create a request with blank message
-        FeedbackRequest invalidRequest = new FeedbackRequest();
-        invalidRequest.setMessage("");  // blank message
-        invalidRequest.setContactType(ContactType.SUPPORT);
 
-        // Act & Assert
+        FeedbackRequest invalidRequest = new FeedbackRequest("", "", ContactType.SUPPORT, "");
+
         mockMvc.perform(post("/api/feedback")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(invalidRequest)))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message").value("message is required")); // optional, if your error response has a message
+                .andExpect(jsonPath("$.message").value("message is required"));
     }
 }
